@@ -1,0 +1,20 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "test": {
+      // These tests check live Docker services, so a cached pass would say
+      // nothing about whether they are running now.
+      "cache": false,
+      // Turbo hides unlisted variables from tasks. Passing these through lets
+      // the shell or CI override .env (see vitest.config.js).
+      "passThroughEnv": [
+        "DATABASE_URL",
+        "TEST_DATABASE_URL",
+        "SMTP_HOST",
+        "SMTP_PORT",
+        "MAILPIT_URL"
+      ]
+    }
+  }
+}

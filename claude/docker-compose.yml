@@ -1,0 +1,43 @@
+# Local services for development and tests. Settings for the apps are in
+# .env.example. Ports are bound to 127.0.0.1, so nothing on your network can
+# reach the dev database or read caught email.
+name: singularity-claude
+
+services:
+  postgres:
+    # Same major version as Cloud SQL (task 1.15). Debian, not Alpine, so text
+    # sorts the way it will in production.
+    image: postgres:18
+    environment:
+      POSTGRES_USER: singularity
+      POSTGRES_PASSWORD: singularity
+      POSTGRES_DB: singularity
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      # Postgres 18+ images keep data under /var/lib/postgresql, not .../data.
+      - postgres-data:/var/lib/postgresql
+      # Runs only when the volume is new. To rerun: docker compose down -v.
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      # Over TCP on purpose: during first-run setup Postgres listens only on a
+      # local socket, so this passes once setup, test database included, is done.
+      test:
+        - CMD
+        - pg_isready
+        - --host=127.0.0.1
+        - --username=singularity
+        - --dbname=singularity
+      interval: 10s
+      start_period: 30s
+      start_interval: 1s
+
+  mailpit:
+    # The image has its own health check (`/mailpit readyz`).
+    image: axllent/mailpit:v1.32
+    ports:
+      - "127.0.0.1:1026:1025" # SMTP
+      - "127.0.0.1:8026:8025" # web inbox
+
+volumes:
+  postgres-data:
