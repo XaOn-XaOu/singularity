@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    // Type Checking
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "strict": true,
+
+    // Modules
+    "module": "nodenext",
+    "noUncheckedSideEffectImports": true,
+    "target": "ES2024",
+    "types": [],
+
+    // Emit
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+
+    // Interop Constraints
+    "erasableSyntaxOnly": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+
+    // Language and Environment
+    "lib": ["ES2024"],
+    "moduleDetection": "force",
+
+    // Completeness
+    "skipLibCheck": true
+  }
+}
